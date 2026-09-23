@@ -6,9 +6,9 @@ using rl = readline.createInterface({
   output: process.stdout,
 });
 
-let kiir: String = "INSERT INTO icecream (flavor, lactose_free, weight) VALUES\n";
+let kiir: string = "INSERT INTO icecream (flavor, lactose_free, weight) VALUES\n";
 
-let fagyik: String[] = []
+let fagyik: string[] = []
 
 let be = "";
 
@@ -34,7 +34,7 @@ do{
 
     let seged: number = Number(await rl.question(`adja meg a fagyik minimum mennyiségét: `));
 
-    if(seged < 0)
+    if(seged > 0)
     {
         min = seged;
         fut = false;
@@ -54,7 +54,7 @@ do{
 
     let seged: number = Number(await rl.question(`adja meg a fagyik maximum mennyiségét: `));
 
-    if(seged < 0 && min! < seged)
+    if(seged > 0 && min! < seged)
     {
         max = seged;
         fut = false;
@@ -74,7 +74,7 @@ do{
 
     let seged: number = Number(await rl.question(`adja meg a teszt addatok menniségét: `));
 
-    if(seged < 0)
+    if(seged > 0)
     {
         mennyiseg = seged;
         fut = false;
@@ -87,10 +87,16 @@ do{
 }while(fut)
 
 
-for (let index = 0; index < mennyiseg!; index++) {
+for (let i = 0; i < mennyiseg!; i++) {
     
     let index: number = Math.floor(Math.random() * (fagyik.length - 1))
 
     let lactose: Boolean = Boolean(Math.floor(Math.random() * 2))
+
+    let mennyiseg: number = Math.floor(Math.random() * (max! - min! + 1)) + min!;
+
+    kiir += `('${fagyik[index]}', ${lactose}, ${mennyiseg.toString()})\n`;
     
 }
+
+fs.writeFileSync("fagyik.sql", kiir, { encoding: 'utf-8' })
